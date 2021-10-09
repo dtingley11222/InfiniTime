@@ -35,16 +35,32 @@ namespace Pinetime {
 
         void Refresh() override;
 
+        void OnObjectEvent(lv_obj_t* pObj, lv_event_t i);
+
       private:
-        char displayedChar[5] {};
+        char displayedChar[5];
+
+        /* RGB hue increment/speed/color parameters */ 
+        // init values
+        int color_val = 0;
+
+        int rate_limit = 0; 
+
+        // hue modifiers
+        int hue_increment = 3;
+
+        int saturation = 85; 
+
+        int value = 85;
+
+        /*end of parameters*/
 
         uint16_t currentYear = 1970;
         Pinetime::Controllers::DateTime::Months currentMonth = Pinetime::Controllers::DateTime::Months::Unknown;
         Pinetime::Controllers::DateTime::Days currentDayOfWeek = Pinetime::Controllers::DateTime::Days::Unknown;
         uint8_t currentDay = 0;
 
-        DirtyValue<uint8_t> batteryPercentRemaining {};
-        DirtyValue<bool> powerPresent {};
+        DirtyValue<int> batteryPercentRemaining {};
         DirtyValue<bool> bleState {};
         DirtyValue<std::chrono::time_point<std::chrono::system_clock, std::chrono::nanoseconds>> currentDateTime {};
         DirtyValue<bool> motionSensorOk {};
@@ -62,6 +78,7 @@ namespace Pinetime {
         lv_obj_t* batteryPlug;
         lv_obj_t* heartbeatIcon;
         lv_obj_t* heartbeatValue;
+        lv_obj_t* heartbeatBpm;
         lv_obj_t* stepIcon;
         lv_obj_t* stepValue;
         lv_obj_t* notificationIcon;
@@ -73,7 +90,6 @@ namespace Pinetime {
         Controllers::Settings& settingsController;
         Controllers::HeartRateController& heartRateController;
         Controllers::MotionController& motionController;
-
         lv_task_t* taskRefresh;
       };
     }
